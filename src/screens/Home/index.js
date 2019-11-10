@@ -9,7 +9,7 @@ import axios from 'axios';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import CheckboxAndText from '../../components/CheckboxAndText';
 import AsyncStorage from '@react-native-community/async-storage';
-import { getBirthdate } from '../../util/birthdateManager';
+import { getBirthdate, monthDiff } from '../../util/birthdateManager';
 
 export default class Home extends Component {
   constructor(props) {
@@ -45,20 +45,13 @@ export default class Home extends Component {
   }
 
   setInitialPageForBirthdate(birthdate) {
-    console.log(birthdate);
-    const monthDiff = this.monthDiff(new Date(birthdate), new Date()) + 1;
-    this.scrollableTabView.goToPage(monthDiff - 1);
-  }
-
-  monthDiff(d1, d2) {
-    var months;
-    months = (d2.getFullYear() - d1.getFullYear()) * 12;
-    months -= d1.getMonth() + 1;
-    months += d2.getMonth();
-    // edit: increment months if d2 comes later in its month than d1 in its month
-    if (d2.getDate() >= d1.getDate()) months++;
-    // end edit
-    return months <= 0 ? 0 : months;
+    const monthDiffValue = monthDiff(new Date(birthdate), new Date()) + 1;
+    console.log(monthDiffValue);
+    if (monthDiffValue < 12) {
+      this.scrollableTabView.goToPage(monthDiffValue - 1);
+    } else {
+      this.scrollableTabView.goToPage(11);
+    }
   }
 
   handleSelection(index, uniqueInfo, firstOrSecondInfo) {
