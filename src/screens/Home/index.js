@@ -8,6 +8,7 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 import axios from 'axios';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import CheckboxAndText from '../../components/CheckboxAndText';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Home extends Component {
   constructor(props) {
@@ -19,12 +20,23 @@ export default class Home extends Component {
     };
   }
 
-  componentDidMount() {
-    axios.get('https://sheetsu.com/apis/v1.0su/b355b384e990').then(res => {
-      this.setState({
-        generalInfo: res.data,
+  async componentDidMount() {
+    axios
+      .get('https://sheetsu.com/apis/v1.0su/b355b384e990')
+      .then(async res => {
+        this.setState({
+          generalInfo: res.data,
+        });
+
+        const selectedInfosFromAsyncStorage = await AsyncStorage.getItem(
+          '@selectedInfos',
+        );
+        if (selectedInfosFromAsyncStorage !== null) {
+          this.setState({
+            selectedInfos: JSON.parse(selectedInfosFromAsyncStorage),
+          });
+        }
       });
-    });
   }
 
   handleSelection(index, uniqueInfo, firstOrSecondInfo) {
@@ -91,7 +103,7 @@ export default class Home extends Component {
       selectedInfos,
     });
 
-    // TODO AsyncStorage
+    AsyncStorage.setItem('@selectedInfos', JSON.stringify(selectedInfos));
   }
 
   isSelected(index, uniqueInfo, firstOrSecondInfo) {
