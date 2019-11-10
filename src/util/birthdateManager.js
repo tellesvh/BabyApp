@@ -20,19 +20,27 @@ export async function setBirthdate(birthdate) {
 
   await AsyncStorage.setItem('@birthdate', birthdate.toString());
 
-  // TODO Agendar notificações
+  for (let i = 1; i <= 12; i++) {
+    const newDate = new Date(birthdate);
+    newDate.setMonth(birthdate.getMonth() + i);
+    newDate.setHours(10, 0, 0);
 
-  // PushNotification.localNotificationSchedule({
-  //   //... You can use all the options from localNotifications
-  //   message: 'My Notification Message', // (required)
-  //   date: new Date(Date.now() + 5 * 1000), // in 5 secs
-  // });
+    if (isDateAfterToday(newDate)) {
+      console.log(newDate);
+      PushNotification.localNotificationSchedule({
+        title: `Feliz ${i < 12 ? 'Mesversario' : 'Aniversário'}!`,
+        message: 'Acompanhe a evolução do seu bebê no nosso app! ;)',
+        date: newDate,
+      });
+    }
+  }
+}
 
-  // PushNotification.localNotificationSchedule({
-  //   //... You can use all the options from localNotifications
-  //   message: 'My Notification Message', // (required)
-  //   date: new Date(Date.now() + 10 * 1000), // in 5 secs
-  // });
+function isDateAfterToday(date) {
+  // return new Date(date.toDateString()) > new Date(new Date().toDateString());
+  return (
+    new Date(date.toDateString()) > new Date(new Date().toDateString()) - 6000
+  );
 }
 
 export function monthDiff(d1, d2) {
