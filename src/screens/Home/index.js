@@ -9,6 +9,7 @@ import axios from 'axios';
 import ProgressBarAnimated from 'react-native-progress-bar-animated';
 import CheckboxAndText from '../../components/CheckboxAndText';
 import AsyncStorage from '@react-native-community/async-storage';
+import { getBirthdate } from '../../util/birthdateManager';
 
 export default class Home extends Component {
   constructor(props) {
@@ -24,19 +25,40 @@ export default class Home extends Component {
     axios
       .get('https://sheetsu.com/apis/v1.0su/b355b384e990')
       .then(async res => {
-        this.setState({
-          generalInfo: res.data,
-        });
-
-        const selectedInfosFromAsyncStorage = await AsyncStorage.getItem(
-          '@selectedInfos',
+        this.setState(
+          {
+            generalInfo: res.data,
+          },
+          async () => {
+            const selectedInfosFromAsyncStorage = await AsyncStorage.getItem(
+              '@selectedInfos',
+            );
+            if (selectedInfosFromAsyncStorage !== null) {
+              this.setState({
+                selectedInfos: JSON.parse(selectedInfosFromAsyncStorage),
+              });
+            }
+            this.setInitialPageForBirthdate(await getBirthdate());
+          },
         );
-        if (selectedInfosFromAsyncStorage !== null) {
-          this.setState({
-            selectedInfos: JSON.parse(selectedInfosFromAsyncStorage),
-          });
-        }
       });
+  }
+
+  setInitialPageForBirthdate(birthdate) {
+    console.log(birthdate);
+    const monthDiff = this.monthDiff(new Date(birthdate), new Date()) + 1;
+    this.scrollableTabView.goToPage(monthDiff - 1);
+  }
+
+  monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth() + 1;
+    months += d2.getMonth();
+    // edit: increment months if d2 comes later in its month than d1 in its month
+    if (d2.getDate() >= d1.getDate()) months++;
+    // end edit
+    return months <= 0 ? 0 : months;
   }
 
   handleSelection(index, uniqueInfo, firstOrSecondInfo) {
@@ -163,7 +185,10 @@ export default class Home extends Component {
     return (
       <View style={{ flex: 1 }}>
         <ScrollableTabView
-          initialPage={0}
+          ref={scrollableTabView =>
+            (this.scrollableTabView = scrollableTabView)
+          }
+          // initialPage={this.state.page}
           prerenderingSiblingsNumber={6}
           renderTabBar={() => (
             <ScrollableTabBar
