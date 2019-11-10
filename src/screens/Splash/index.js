@@ -22,7 +22,7 @@ export default class Splash extends Component {
       },
 
       onNotification: function (notification) {
-        console.log('NOTIFICATION:', notification);
+        // console.log('NOTIFICATION:', notification);
 
         // process the notification
 

@@ -26,7 +26,10 @@ class NavBar extends React.Component {
         <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>
           Nome do App
         </Text>
-        <TouchableOpacity onPress={() => { }}>
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('Info');
+          }}>
           <InformationSvg size={24} color={'white'} />
         </TouchableOpacity>
       </View>

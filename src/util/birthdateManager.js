@@ -27,6 +27,12 @@ export async function setBirthdate(birthdate) {
   //   message: 'My Notification Message', // (required)
   //   date: new Date(Date.now() + 5 * 1000), // in 5 secs
   // });
+
+  // PushNotification.localNotificationSchedule({
+  //   //... You can use all the options from localNotifications
+  //   message: 'My Notification Message', // (required)
+  //   date: new Date(Date.now() + 10 * 1000), // in 5 secs
+  // });
 }
 
 export function monthDiff(d1, d2) {
