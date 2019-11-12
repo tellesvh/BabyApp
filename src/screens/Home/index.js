@@ -137,7 +137,6 @@ export default class Home extends Component {
   }
 
   organizeRawGoogleAPIData(rawData) {
-    console.log(rawData);
     let headerTitles = [];
     let finalArray = [];
 

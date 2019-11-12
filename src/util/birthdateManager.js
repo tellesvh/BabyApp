@@ -26,7 +26,6 @@ export async function setBirthdate(birthdate) {
     newDate.setHours(10, 0, 0);
 
     if (isDateAfterToday(newDate)) {
-      console.log(newDate);
       PushNotification.localNotificationSchedule({
         title: `Feliz ${i < 12 ? 'Mesversario' : 'Aniversário'}!`,
         message: 'Acompanhe a evolução do seu bebê no nosso app! ;)',
@@ -37,10 +36,10 @@ export async function setBirthdate(birthdate) {
 }
 
 function isDateAfterToday(date) {
-  // return new Date(date.toDateString()) > new Date(new Date().toDateString());
-  return (
-    new Date(date.toDateString()) > new Date(new Date().toDateString()) - 6000
-  );
+  return new Date(date.toDateString()) > new Date(new Date().toDateString());
+  // return (
+  //   new Date(date.toDateString()) > new Date(new Date().toDateString()) - 6000
+  // );
 }
 
 export function monthDiff(d1, d2) {
