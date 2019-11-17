@@ -128,7 +128,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.fisio"
+        applicationId "com.tellesvh.babyapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

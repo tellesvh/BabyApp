@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'fisio' do
-  # Pods for fisio
+target 'BabyApp' do
+  # Pods for BabyApp
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
@@ -34,7 +34,7 @@ target 'fisio' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'fisioTests' do
+  target 'BabyAppTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -42,10 +42,10 @@ target 'fisio' do
   use_native_modules!
 end
 
-target 'fisio-tvOS' do
-  # Pods for fisio-tvOS
+target 'BabyApp-tvOS' do
+  # Pods for BabyApp-tvOS
 
-  target 'fisio-tvOSTests' do
+  target 'BabyApp-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
