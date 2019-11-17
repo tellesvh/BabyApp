@@ -26,7 +26,7 @@ export default class Welcome extends Component {
               color: 'white',
               marginBottom: 24,
             }}>
-            Nome do App
+            BabyApp
           </Text>
           <Text style={{ fontSize: 56, fontWeight: '200', color: 'white' }}>
             Olá!

@@ -24,7 +24,7 @@ class NavBar extends React.Component {
           backgroundColor={Colors.primaryColor}
         />
         <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>
-          Nome do App
+          BabyApp
         </Text>
         <TouchableOpacity
           onPress={() => {
