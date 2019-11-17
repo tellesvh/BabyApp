@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, Dimensions, FlatList, ScrollView } from 'react-native';
+import {
+  Text,
+  View,
+  Dimensions,
+  FlatList,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
@@ -306,118 +313,124 @@ export default class Home extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollableTabView
-          ref={scrollableTabView =>
-            (this.scrollableTabView = scrollableTabView)
-          }
-          initialPage={0}
-          prerenderingSiblingsNumber={6}
-          renderTabBar={() => (
-            <ScrollableTabBar
-              activeTextColor={'#FFF'}
-              inactiveTextColor="rgba(255,255,255,0.5)"
-              underlineStyle={{ backgroundColor: '#FFF' }}
-              style={{
-                backgroundColor: Colors.primaryDarkColor,
-                borderBottomWidth: 0,
-              }}
-            />
-          )}>
-          {this.state.generalInfo.map((uniqueInfo, uniqueInfoIndex) => {
-            let firstInfoArray = JSON.parse(uniqueInfo.firstInfo);
-            let secondInfoArray = JSON.parse(uniqueInfo.secondInfo);
-            return (
-              <ScrollView
-                tabLabel={uniqueInfo.tabBarTitle}
-                scrollIndicatorInsets={{ bottom: getBottomSpace() > 0 && 0.1 }}
-                contentContainerStyle={{
-                  paddingHorizontal: 16,
-                  // paddingTop: 16,
-                  paddingBottom: getBottomSpace() > 0 ? getBottomSpace() : 16,
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {this.state.generalInfo.length > 0 ? (
+          <ScrollableTabView
+            ref={scrollableTabView =>
+              (this.scrollableTabView = scrollableTabView)
+            }
+            initialPage={0}
+            prerenderingSiblingsNumber={6}
+            renderTabBar={() => (
+              <ScrollableTabBar
+                activeTextColor={'#FFF'}
+                inactiveTextColor="rgba(255,255,255,0.5)"
+                underlineStyle={{ backgroundColor: '#FFF' }}
+                style={{
+                  backgroundColor: Colors.primaryDarkColor,
+                  borderBottomWidth: 0,
                 }}
-                stickyHeaderIndices={[0]}
-                style={{ flex: 1 }}>
-                <View
-                  style={{
-                    paddingTop: 16,
-                    paddingBottom: 16,
-                    backgroundColor: '#FFF',
-                  }}>
-                  {/* <Text>
+              />
+            )}>
+            {this.state.generalInfo.map((uniqueInfo, uniqueInfoIndex) => {
+              let firstInfoArray = JSON.parse(uniqueInfo.firstInfo);
+              let secondInfoArray = JSON.parse(uniqueInfo.secondInfo);
+              return (
+                <ScrollView
+                  tabLabel={uniqueInfo.tabBarTitle}
+                  scrollIndicatorInsets={{
+                    bottom: getBottomSpace() > 0 && 0.1,
+                  }}
+                  contentContainerStyle={{
+                    paddingHorizontal: 16,
+                    // paddingTop: 16,
+                    paddingBottom: getBottomSpace() > 0 ? getBottomSpace() : 16,
+                  }}
+                  stickyHeaderIndices={[0]}
+                  style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      paddingTop: 16,
+                      paddingBottom: 16,
+                      backgroundColor: '#FFF',
+                    }}>
+                    {/* <Text>
                     {this.findSelectedItemsForSection(uniqueInfo)} de{' '}
                     {this.findTotalForSection(uniqueInfo)}
                   </Text> */}
-                  <View style={{ marginBottom: 8 }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 42 }}>
-                      {this.findSelectedItemsForSection(uniqueInfo)}
-                      <Text style={{ fontSize: 18, fontWeight: 'normal' }}>
-                        {' '}
-                        de {this.findTotalForSection(uniqueInfo)}
+                    <View style={{ marginBottom: 8 }}>
+                      <Text style={{ fontWeight: 'bold', fontSize: 42 }}>
+                        {this.findSelectedItemsForSection(uniqueInfo)}
+                        <Text style={{ fontSize: 18, fontWeight: 'normal' }}>
+                          {' '}
+                          de {this.findTotalForSection(uniqueInfo)}
+                        </Text>
                       </Text>
-                    </Text>
+                    </View>
+                    <ProgressBarAnimated
+                      width={Dimensions.get('screen').width - 32}
+                      value={
+                        (this.findSelectedItemsForSection(uniqueInfo) /
+                          this.findTotalForSection(uniqueInfo)) *
+                        100
+                      }
+                      borderRadius={300}
+                      barAnimationDuration={300}
+                      backgroundColorOnComplete={Colors.primaryDarkColor}
+                    />
                   </View>
-                  <ProgressBarAnimated
-                    width={Dimensions.get('screen').width - 32}
-                    value={
-                      (this.findSelectedItemsForSection(uniqueInfo) /
-                        this.findTotalForSection(uniqueInfo)) *
-                      100
-                    }
-                    borderRadius={300}
-                    barAnimationDuration={300}
-                    backgroundColorOnComplete={Colors.primaryDarkColor}
-                  />
-                </View>
-                <View style={{ marginBottom: 24 }}>
-                  <FlatList
-                    data={firstInfoArray}
-                    extraData={this.state}
-                    renderItem={({ item, index }) => (
-                      <CheckboxAndText
-                        text={item}
-                        onPress={() => {
-                          this.handleSelection(index, uniqueInfo, 0);
-                        }}
-                        isSelected={this.isSelected(index, uniqueInfo, 0)}
-                      />
-                    )}
-                    keyExtractor={(item, index) => `${index}`}
-                    ItemSeparatorComponent={() => (
-                      <View style={{ height: 12 }} />
-                    )}
-                  />
-                </View>
-                <View style={{ marginBottom: 16 }}>
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontSize: 24,
-                      marginBottom: 8,
-                    }}>
-                    Estímulos
-                  </Text>
-                  <FlatList
-                    data={secondInfoArray}
-                    renderItem={({ item, index }) => (
-                      <CheckboxAndText
-                        text={item}
-                        onPress={() => {
-                          this.handleSelection(index, uniqueInfo, 1);
-                        }}
-                        isSelected={this.isSelected(index, uniqueInfo, 1)}
-                      />
-                    )}
-                    keyExtractor={(item, index) => `${index}`}
-                    ItemSeparatorComponent={() => (
-                      <View style={{ height: 12 }} />
-                    )}
-                  />
-                </View>
-              </ScrollView>
-            );
-          })}
-        </ScrollableTabView>
+                  <View style={{ marginBottom: 24 }}>
+                    <FlatList
+                      data={firstInfoArray}
+                      extraData={this.state}
+                      renderItem={({ item, index }) => (
+                        <CheckboxAndText
+                          text={item}
+                          onPress={() => {
+                            this.handleSelection(index, uniqueInfo, 0);
+                          }}
+                          isSelected={this.isSelected(index, uniqueInfo, 0)}
+                        />
+                      )}
+                      keyExtractor={(item, index) => `${index}`}
+                      ItemSeparatorComponent={() => (
+                        <View style={{ height: 12 }} />
+                      )}
+                    />
+                  </View>
+                  <View style={{ marginBottom: 16 }}>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: 24,
+                        marginBottom: 8,
+                      }}>
+                      Estímulos
+                    </Text>
+                    <FlatList
+                      data={secondInfoArray}
+                      renderItem={({ item, index }) => (
+                        <CheckboxAndText
+                          text={item}
+                          onPress={() => {
+                            this.handleSelection(index, uniqueInfo, 1);
+                          }}
+                          isSelected={this.isSelected(index, uniqueInfo, 1)}
+                        />
+                      )}
+                      keyExtractor={(item, index) => `${index}`}
+                      ItemSeparatorComponent={() => (
+                        <View style={{ height: 12 }} />
+                      )}
+                    />
+                  </View>
+                </ScrollView>
+              );
+            })}
+          </ScrollableTabView>
+        ) : (
+            <ActivityIndicator size="large" color={Colors.primaryDarkColor} />
+          )}
       </View>
     );
   }
